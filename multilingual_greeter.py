@@ -3,17 +3,17 @@ from typing import Dict
 # Populate this dictionary with at least two languages.
 # Use integers for keys and strings for values.
 # Example: Key = 1. Value = 'English'.
-lang_dict = {
+lang_dict = { 1 : 'English', 2 : 'Castellano', 3 : 'Deutsch'
 }
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'What is your name?'.
-name_prompt_dict = {
+name_prompt_dict = { 1 : 'What is your name?', 2 : 'Como te llamas?', 3 : 'Wie heissen Sie?'
 }
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'Hello'.
-greetings_dict = {
+greetings_dict = { 1 : 'Hello', 2 : 'Hola', 3 : "Hallo"
 }
 
 
@@ -26,7 +26,11 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     Values are strings representing the name of a language
     :return: None
     """
-    pass  # remove pass statement and implement me
+    print('Please choose a language: ')
+    for key in lang_options:
+        print(f'{key}: {lang_options[key]}') 
+
+    # remove pass statement and implement me
 
 
 def language_input() -> int:
@@ -35,7 +39,12 @@ def language_input() -> int:
 
     :return: An integer representing the language choice made by the user
     """
-    pass  # remove pass statement and implement me
+    keyToVerify = input(print_language_options(lang_dict))
+    for key in lang_dict:
+        if key == int(keyToVerify):
+            return key
+
+    # remove pass statement and implement me
 
 
 def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> bool:
@@ -49,7 +58,19 @@ def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> 
     :param lang_choice: An integer representing the value the user selected
     :return: A boolean representing the validity of the lang_choice
     """
-    pass  # remove pass statement and implement me
+    lang_options_length = len(lang_options)
+
+    if (type(lang_choice) != type(2)):
+        return False
+    elif (lang_choice > lang_options_length):
+        return False
+    elif (lang_choice == None):
+        return False
+    else:
+        return True
+
+
+    # remove pass statement and implement me
 
 
 def get_name_input(name_prompt_options: Dict[int, str], lang_choice: int) -> str:
