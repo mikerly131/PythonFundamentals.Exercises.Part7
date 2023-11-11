@@ -16,6 +16,7 @@ name_prompt_dict = { 1 : 'What is your name?', 2 : 'Como te llamas?', 3 : 'Wie h
 greetings_dict = { 1 : 'Hello', 2 : 'Hola', 3 : "Hallo"
 }
 
+# Use these for state variables if get time to make class and objects
 program_mode = 0
 function_mode = 0
 
@@ -314,18 +315,23 @@ if __name__ == '__main__':
                 print(f'Greeting updated: {greeting_to_modify}: {greet_to_add}')
         # 2 - Execture user mode
         else:
+            # Get user to select language for greeting
             print_language_options(lang_dict)
             chosen_lang = select_language()
 
+            # If invalid selection, make them get it right
             while language_choice_is_valid(lang_dict, chosen_lang) is False:
                 print("Invalid selection. Try again.")
                 chosen_lang = select_language()
-                
-
+            
+            # Prompt in selected language user for their name
             selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+            
+            # Greet user in the selected language using their name
             chosen_name = name_input(selected_prompt)
             greet(chosen_name, greetings_dict, chosen_lang)
 
+        # Prompt user if they want to do more (admin mode changes only exist while program running)
         keep_going = input("Want to do something else? Enter Y/N: ")
         if keep_going == 'Y' or keep_going == 'y':
             continue_program = True
