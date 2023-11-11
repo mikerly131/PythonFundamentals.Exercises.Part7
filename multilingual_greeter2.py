@@ -154,6 +154,37 @@ def add_name_prompt_to_dict(name_prompt_add: str):
     index = len(name_prompt_dict)
     name_prompt_dict['index'] = name_prompt_add
 
+def choose_greeting_to_modify() -> int:
+    print(greetings_dict)
+    while True:
+        try:
+            greeting_to_modify = int(input('Enter the number of the greeting to modify: '))
+            break
+        except:
+            print("Not a valid selection. Enter a number.")
+    
+    return greeting_to_modify
+
+def get_modified_greeting_from_user() -> str:
+    while True:
+        try:
+            greeting_to_add = str(input("Enter the modified greeting: "))
+        except:
+            print("Not a string, greetings must be strings [start a-z or A-Z]")
+
+        try:
+            does_greeting_exist = False
+            does_greeting_exist == check_greeting_in_dict(greeting_to_add)
+            break
+        except:
+            print("Greeting already exists, choose a different one")  
+    
+    return greeting_to_add
+
+
+def update_greeting(greetings_dict_index: int, greet_add: str):
+    greetings_dict[greetings_dict_index] = greet_add
+
 def print_language_options(lang_options: Dict[int, str]) -> None:
     """
     Given a dictionary, this functions iterates through the values and prints them out.
@@ -265,7 +296,10 @@ if __name__ == '__main__':
             add_language(lang_to_add, greet_to_add, name_prompt_to_add)
             print(f'The {lang_to_add} was added with {greet_to_add} as the greeting and {name_prompt_to_add} as the name.')
         else:
-            print('Modify greeting coming soon.  Bye')
+            greeting_to_modify = choose_greeting_to_modify()
+            greet_to_add = get_modified_greeting_from_user()
+            update_greeting(greeting_to_modify, greet_to_add)
+            print(f'Greeting updated: {greeting_to_modify}: {greet_to_add}')
     else:
         print('User mode coming soon. Bye')
 
