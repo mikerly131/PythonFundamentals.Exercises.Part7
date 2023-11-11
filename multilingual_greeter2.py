@@ -143,16 +143,16 @@ def add_language(lang_add: str, greet_add: str, name_prompt: str) -> None:
 
 
 def add_language_to_dict(lang_add: str):  
-    index = len(lang_dict)
-    lang_dict['index'] = lang_add
+    index = len(lang_dict) + 1
+    lang_dict[index] = lang_add
 
 def add_greeting_to_dict(greet_add: str):
-    index = len(greetings_dict)
-    greetings_dict['index'] = greet_add
+    index = len(greetings_dict) + 1
+    greetings_dict[index] = greet_add
 
 def add_name_prompt_to_dict(name_prompt_add: str):
-    index = len(name_prompt_dict)
-    name_prompt_dict['index'] = name_prompt_add
+    index = len(name_prompt_dict) + 1
+    name_prompt_dict[index] = name_prompt_add
 
 def choose_greeting_to_modify() -> int:
     print(greetings_dict)
@@ -202,13 +202,13 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     # remove pass statement and implement me
 
 
-def language_input() -> int:
+def select_language() -> int:
     """
     This function prompts the user for a language choice.
 
     :return: An integer representing the language choice made by the user
     """
-    keyToVerify = input(print_language_options(lang_dict))
+    keyToVerify = int(input("Enter the number of the langauge you want: "))
     for key in lang_dict:
         if key == int(keyToVerify):
             return key
@@ -284,33 +284,53 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
 
 
 if __name__ == '__main__':
-    program_choice = choose_program_mode()
 
-    if program_choice == 1:
-        admin_function = choose_admin_function()
+    # Get the users to select if they want admin or user mode
+    continue_program = True
+    while(continue_program == True):
+    
+        program_choice = choose_program_mode()
 
-        if admin_function == 1:
-            lang_to_add = get_language_from_user()
-            greet_to_add = get_greeting_from_user()
-            name_prompt_to_add = get_name_prompt_from_user()
-            add_language(lang_to_add, greet_to_add, name_prompt_to_add)
-            print(f'The {lang_to_add} was added with {greet_to_add} as the greeting and {name_prompt_to_add} as the name.')
+        # Execute either admin (1) or user (2) mode
+        # 1 - Execute Admin mode
+        if program_choice == 1:
+
+            #Get the user to select if which admin function they want
+            admin_function = choose_admin_function()
+
+            # Execute the selected admin function
+            # 1 - add a new language (language name, greeting, name to prompt)
+            if admin_function == 1:
+                lang_to_add = get_language_from_user()
+                greet_to_add = get_greeting_from_user()
+                name_prompt_to_add = get_name_prompt_from_user()
+                add_language(lang_to_add, greet_to_add, name_prompt_to_add)
+                print(f'The {lang_to_add} was added with {greet_to_add} as the greeting and {name_prompt_to_add} as the name.')
+            # 2 - modify an existing greeting (greeting to modify, new greeting)
+            else:
+                greeting_to_modify = choose_greeting_to_modify()
+                greet_to_add = get_modified_greeting_from_user()
+                update_greeting(greeting_to_modify, greet_to_add)
+                print(f'Greeting updated: {greeting_to_modify}: {greet_to_add}')
+        # 2 - Execture user mode
         else:
-            greeting_to_modify = choose_greeting_to_modify()
-            greet_to_add = get_modified_greeting_from_user()
-            update_greeting(greeting_to_modify, greet_to_add)
-            print(f'Greeting updated: {greeting_to_modify}: {greet_to_add}')
-    else:
-        print('User mode coming soon. Bye')
+            print_language_options(lang_dict)
+            chosen_lang = select_language()
 
-        """
-        print_language_options(lang_dict)
-        chosen_lang = language_input()
-        while language_choice_is_valid(lang_dict, chosen_lang) is False:
-            print("Invalid selection. Try again.")
-            chosen_lang = language_input()
+            while language_choice_is_valid(lang_dict, chosen_lang) is False:
+                print("Invalid selection. Try again.")
+                chosen_lang = select_language()
+                
 
-        selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
-        chosen_name = name_input(selected_prompt)
-        greet(chosen_name, greetings_dict, chosen_lang)
-        """
+            selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+            chosen_name = name_input(selected_prompt)
+            greet(chosen_name, greetings_dict, chosen_lang)
+
+        keep_going = input("Want to do something else? Enter Y/N: ")
+        if keep_going == 'Y' or keep_going == 'y':
+            continue_program = True
+        else:
+            continue_program = False
+    
+    print('Bon Voyage')
+
