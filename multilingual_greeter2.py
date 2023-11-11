@@ -16,6 +16,143 @@ name_prompt_dict = { 1 : 'What is your name?', 2 : 'Como te llamas?', 3 : 'Wie h
 greetings_dict = { 1 : 'Hello', 2 : 'Hola', 3 : "Hallo"
 }
 
+program_mode = 0
+function_mode = 0
+
+# Use these and loop through options to print to user, by...
+# Replacing the existing prints in choose_program_mode and get_admin_mode_functions
+program_modes = { 1: 'Admin', 2: 'User'
+}
+amdin_functions = { 1: 'Add a language', 2: 'Modify a greeting'}
+
+def choose_program_mode() -> int:
+    """
+    Prompt the user to select the mode to run the program:  user or admin
+    Return an integer
+    """
+    print('Choose the mode to run the program: 1 for Admin, 2 for User\nAdmin mode allows new languages and greetings to be added\nUser mode geets a user in a selected language')
+    while True:
+        try:
+            program_mode = int(input("Enter 1 or 2 for desired mode: "))
+            break
+        except:
+            print("Not a valid selection. Enter 1 or 2.")
+    
+    return program_mode
+
+def choose_admin_function() -> int:
+    """
+    Prompt the user to select the admin mode function
+    Return an integer representing selection
+    """
+    print('Choose an admin function to do:')
+    print('1 to add a new language, its greeting and name promp')
+    print('2 to modify an existing language')
+    while True:
+        try:
+            function_mode = int(input("Enter 1 or 2 for desired function: "))
+            break
+        except:
+            print("Not a valid selection. Enter 1 or 2.")   
+    return function_mode
+
+def get_language_from_user():
+    """
+    Get a new language to add to the dictionary from an admin
+    """
+    while True:
+        try:
+            lang_to_add = str(input("Enter the language to add: "))
+        except:
+            print("Not a string, languages must be strings [start a-z or A-Z]")
+
+        try:
+            does_lang_exist = False
+            does_lang_exist == check_language_in_dict(lang_to_add)
+            break
+        except:
+            print("Language already exists, choose a different one")  
+            
+    return lang_to_add
+
+def check_language_in_dict(lang_add: str) -> bool:
+    exists = False
+    for i in lang_dict:
+        if lang_dict[i] == lang_add:
+            exists = True
+    return exists
+    
+def get_greeting_from_user():
+    while True:
+        try:
+            greeting_to_add = str(input("Enter the greeting to add: "))
+        except:
+            print("Not a string, greetings must be strings [start a-z or A-Z]")
+
+        try:
+            does_greeting_exist = False
+            does_greeting_exist == check_greeting_in_dict(greeting_to_add)
+            break
+        except:
+            print("Greeting already exists, choose a different one")  
+    
+    return greeting_to_add
+
+def check_greeting_in_dict(greet_add: str) -> bool:
+    exists = False
+    for i in greetings_dict:
+        if greetings_dict[i] == greet_add:
+            exists = True
+    return exists
+
+def get_name_prompt_from_user():
+    while True:
+        try:
+            name_prompt_to_add = str(input("Enter the name prompt to add: "))
+        except:
+            print("Not a string, name prompts must be strings [start a-z or A-Z]")
+
+        try:
+            does_name_prompt_exist = False
+            does_name_prompt_exist == check_name_prompt_in_dict(name_prompt_to_add)
+            break
+        except:
+            print("Name prompt already exists, choose a different one")  
+    
+    return name_prompt_to_add 
+
+def check_name_prompt_in_dict(name_prompt_add: str) -> bool:
+    exists = False
+    for i in name_prompt_dict:
+        if name_prompt_dict[i] == name_prompt_add:
+            exists = True
+    return exists
+
+    
+def add_language(lang_add: str, greet_add: str, name_prompt: str) -> None:
+    """
+    Given a language to add, greeting in that language, and name prompt in that language 
+    When method called
+    Then add lang to lang_dict, add greeting to greetings_dict, and add name prompt to name_prompt_dict
+    """   
+    # Just get it working first, then add features to it
+    add_language_to_dict(lang_add)
+    add_greeting_to_dict(greet_add)
+    add_name_prompt_to_dict(name_prompt)
+    return None
+
+
+def add_language_to_dict(lang_add: str):  
+    index = len(lang_dict)
+    lang_dict['index'] = lang_add
+
+def add_greeting_to_dict(greet_add: str):
+    index = len(greetings_dict)
+    greetings_dict['index'] = greet_add
+
+def add_name_prompt_to_dict(name_prompt_add: str):
+    index = len(name_prompt_dict)
+    name_prompt_dict['index'] = name_prompt_add
 
 def print_language_options(lang_options: Dict[int, str]) -> None:
     """
@@ -29,6 +166,7 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     print('Please choose a language: ')
     for key in lang_options:
         print(f'{key}: {lang_options[key]}') 
+    return None
 
     # remove pass statement and implement me
 
@@ -115,12 +253,30 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
 
 
 if __name__ == '__main__':
-    print_language_options(lang_dict)
-    chosen_lang = language_input()
-    while language_choice_is_valid(lang_dict, chosen_lang) is False:
-        print("Invalid selection. Try again.")
-        chosen_lang = language_input()
+    program_choice = choose_program_mode()
 
-    selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
-    chosen_name = name_input(selected_prompt)
-    greet(chosen_name, greetings_dict, chosen_lang)
+    if program_choice == 1:
+        admin_function = choose_admin_function()
+
+        if admin_function == 1:
+            lang_to_add = get_language_from_user()
+            greet_to_add = get_greeting_from_user()
+            name_prompt_to_add = get_name_prompt_from_user()
+            add_language(lang_to_add, greet_to_add, name_prompt_to_add)
+            print(f'The {lang_to_add} was added with {greet_to_add} as the greeting and {name_prompt_to_add} as the name.')
+        else:
+            print('Modify greeting coming soon.  Bye')
+    else:
+        print('User mode coming soon. Bye')
+
+        """
+        print_language_options(lang_dict)
+        chosen_lang = language_input()
+        while language_choice_is_valid(lang_dict, chosen_lang) is False:
+            print("Invalid selection. Try again.")
+            chosen_lang = language_input()
+
+        selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+        chosen_name = name_input(selected_prompt)
+        greet(chosen_name, greetings_dict, chosen_lang)
+        """
